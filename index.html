@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Citations & Messages — Amour, Motivation & Plus</title>
+<meta name="description" content="Citations et messages sur l'amour, le succès, la motivation et plus, avec partage et thème clair/sombre.">
+<meta name="theme-color" content="#1a1a2e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Citations">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<style>
+  :root{
+    --bg1:#1a1a2e; --bg2:#16213e; --bg3:#0f3460;
+    --card:rgba(255,255,255,0.07); --card-b:rgba(255,255,255,0.1);
+    --ink:#f7fafc; --muted:#a0aec0; --sub:#e2e8f0;
+    --accent1:#ff6b6b; --accent2:#feca57; --accent3:#48dbfb;
+    --chip-bg:rgba(255,255,255,0.08); --chip-b:rgba(255,255,255,0.1);
+    --item-bg:rgba(255,255,255,0.05); --item-hover:rgba(255,255,255,0.1);
+    --btn-copy-bg:rgba(255,255,255,0.1); --footer:#718096;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --bg1:#fdf6f0; --bg2:#fceee3; --bg3:#f8dfd0;
+      --card:rgba(255,255,255,0.65); --card-b:rgba(0,0,0,0.06);
+      --ink:#2d2a32; --muted:#6b6472; --sub:#3d3844;
+      --chip-bg:rgba(0,0,0,0.04); --chip-b:rgba(0,0,0,0.08);
+      --item-bg:rgba(0,0,0,0.03); --item-hover:rgba(0,0,0,0.06);
+      --btn-copy-bg:rgba(0,0,0,0.06); --footer:#8a8391;
+    }
+  }
+  :root[data-theme="light"]{
+    --bg1:#fdf6f0; --bg2:#fceee3; --bg3:#f8dfd0;
+    --card:rgba(255,255,255,0.65); --card-b:rgba(0,0,0,0.06);
+    --ink:#2d2a32; --muted:#6b6472; --sub:#3d3844;
+    --chip-bg:rgba(0,0,0,0.04); --chip-b:rgba(0,0,0,0.08);
+    --item-bg:rgba(0,0,0,0.03); --item-hover:rgba(0,0,0,0.06);
+    --btn-copy-bg:rgba(0,0,0,0.06); --footer:#8a8391;
+  }
+  :root[data-theme="dark"]{
+    --bg1:#1a1a2e; --bg2:#16213e; --bg3:#0f3460;
+    --card:rgba(255,255,255,0.07); --card-b:rgba(255,255,255,0.1);
+    --ink:#f7fafc; --muted:#a0aec0; --sub:#e2e8f0;
+    --chip-bg:rgba(255,255,255,0.08); --chip-b:rgba(255,255,255,0.1);
+    --item-bg:rgba(255,255,255,0.05); --item-hover:rgba(255,255,255,0.1);
+    --btn-copy-bg:rgba(255,255,255,0.1); --footer:#718096;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{height:100%}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 50%,var(--bg3) 100%);
+    min-height:100%;color:var(--ink);padding:20px;
+    transition:background .4s ease,color .4s ease;
+  }
+  .container{max-width:900px;margin:0 auto}
+  header{text-align:center;margin-bottom:28px;padding-top:10px;position:relative}
+  .theme-toggle{
+    position:absolute;top:0;right:0;width:44px;height:44px;border-radius:50%;
+    border:1px solid var(--chip-b);background:var(--chip-bg);color:var(--ink);
+    font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  }
+  header h1{
+    font-size:2.3rem;font-weight:700;
+    background:linear-gradient(90deg,var(--accent1),var(--accent2),var(--accent3));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    margin-bottom:8px;
+  }
+  header p{color:var(--muted);font-size:1.05rem}
+  .categories{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:32px}
+  .cat-btn{
+    padding:11px 20px;border-radius:50px;font-size:.92rem;font-weight:600;cursor:pointer;
+    transition:all .25s ease;background:var(--chip-bg);color:var(--sub);
+    border:1px solid var(--chip-b);
+  }
+  .cat-btn:hover{transform:translateY(-2px)}
+  .cat-btn.active{
+    background:linear-gradient(135deg,var(--accent1),#ee5a24);color:#fff;
+    box-shadow:0 8px 20px rgba(238,90,36,.35);border-color:transparent;
+  }
+  .quote-card{
+    background:var(--card);backdrop-filter:blur(12px);border-radius:24px;
+    padding:38px 26px;text-align:center;border:1px solid var(--card-b);
+    box-shadow:0 20px 40px rgba(0,0,0,.18);margin-bottom:26px;min-height:210px;
+    display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;
+  }
+  .quote-card::before{
+    content:'"';position:absolute;top:-14px;left:18px;font-size:110px;opacity:.08;
+    font-family:Georgia,serif;color:var(--ink);
+  }
+  .quote-text{font-size:1.4rem;line-height:1.6;font-style:italic;margin-bottom:18px;color:var(--ink)}
+  .quote-author{font-size:1rem;color:var(--accent2);font-weight:600}
+  .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  .action-btn{
+    padding:13px 24px;border:none;border-radius:50px;font-size:.98rem;font-weight:600;
+    cursor:pointer;transition:all .25s ease;display:flex;align-items:center;gap:8px;
+  }
+  .btn-random{background:linear-gradient(135deg,var(--accent3),#0abde3);color:#0f1b2e}
+  .btn-random:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(72,219,251,.35)}
+  .btn-copy{background:var(--btn-copy-bg);color:var(--ink);border:1px solid var(--chip-b)}
+  .btn-copy:hover{transform:translateY(-2px)}
+  .btn-copy.copied{background:#2ecc71;border-color:#2ecc71;color:#08210f}
+  .btn-share{background:#25D366;color:#06210f}
+  .btn-share:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(37,211,102,.35)}
+  .all-quotes{margin-top:36px}
+  .all-quotes h3{text-align:center;margin-bottom:18px;color:var(--muted);font-weight:600;font-size:1.02rem}
+  .quotes-list{display:grid;gap:13px}
+  .quote-item{
+    background:var(--item-bg);padding:16px 20px;border-radius:16px;
+    border-left:4px solid var(--accent1);cursor:pointer;transition:all .2s ease;
+  }
+  .quote-item:hover{background:var(--item-hover);transform:translateX(4px)}
+  .quote-item p{font-size:1.02rem;margin-bottom:5px;color:var(--ink)}
+  .quote-item span{font-size:.83rem;color:var(--accent2)}
+  footer{text-align:center;margin-top:44px;padding-bottom:24px;color:var(--footer);font-size:.88rem}
+  .install-card{
+    background:var(--card);border:1px solid var(--card-b);border-radius:18px;
+    padding:16px 18px;margin:18px auto 0;max-width:560px;text-align:center;
+  }
+  .install-card p{color:var(--muted);font-size:.9rem;margin:6px 0 12px}
+  .install-card button{
+    padding:11px 22px;border:none;border-radius:50px;font-weight:700;cursor:pointer;
+    background:linear-gradient(135deg,var(--accent1),#ee5a24);color:#fff;font-size:.95rem;
+  }
+  .install-card.hidden{display:none}
+  .app-version{text-align:center;color:var(--footer);font-size:.78rem;margin-top:6px}
+  @media (max-width:600px){
+    header h1{font-size:1.7rem}
+    .quote-text{font-size:1.18rem}
+    .cat-btn{padding:9px 15px;font-size:.83rem}
+    .theme-toggle{width:40px;height:40px}
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <button class="theme-toggle" id="themeBtn" aria-label="Changer de thème" onclick="toggleTheme()">🌙</button>
+      <h1>✨ Citations & Messages</h1>
+      <p>Amour • Déception • Succès • Motivation • Échec • Amitié • Sagesse • Bonheur</p>
+    </header>
+
+    <div class="categories" id="categories"></div>
+
+    <div class="quote-card">
+      <p class="quote-text" id="quoteText">Choisissez une catégorie pour commencer...</p>
+      <p class="quote-author" id="quoteAuthor"></p>
+    </div>
+
+    <div class="actions">
+      <button class="action-btn btn-random" onclick="showRandomQuote()">🎲 Citation aléatoire</button>
+      <button class="action-btn btn-copy" id="copyBtn" onclick="copyQuote()">📋 Copier</button>
+      <button class="action-btn btn-share" id="shareBtn" onclick="shareWhatsApp()">💬 Partager</button>
+    </div>
+
+    <div class="all-quotes">
+      <h3 id="listTitle">Toutes les citations</h3>
+      <div class="quotes-list" id="quotesList"></div>
+    </div>
+
+    <div class="install-card hidden" id="installCard">
+      <p id="installText">📲 Installe cette appli sur ton écran d'accueil pour l'ouvrir en un geste, même sans internet.</p>
+      <button id="installBtn">Installer l'application</button>
+    </div>
+
+    <footer>Fait avec ❤️ — touchez une citation pour l'afficher en grand</footer>
+    <p class="app-version">Citations & Messages — Version 1.0.0</p>
+  </div>
+
+<script>
+  const quotes = {
+    amour: [
+      { text: "Il n'y a qu'un bonheur dans la vie, c'est d'aimer et d'être aimé.", author: "George Sand" },
+      { text: "Aimer, c'est savoir dire je t'aime sans parler.", author: "Victor Hugo" },
+      { text: "L'amour est la poésie des sens.", author: "Honoré de Balzac" },
+      { text: "Tu es mon endroit préféré où aller lorsque mon esprit cherche la paix.", author: "Anonyme" },
+      { text: "Avec toi, je suis chez moi, peu importe où je me trouve.", author: "Anonyme" },
+      { text: "Tu illumines ma vie.", author: "Anonyme" },
+      { text: "Je t'aime dans le temps. Je t'aimerai jusqu'au bout du temps.", author: "Jean d'Ormesson" },
+      { text: "L'amour est plus fort que tout.", author: "Virgile" },
+      { text: "Mon cœur bat ton prénom.", author: "Anonyme" },
+      { text: "Tu es ma raison de sourire chaque jour.", author: "Anonyme" },
+      { text: "Aimer quelqu'un, c'est lui montrer sa vie en couleurs.", author: "Anonyme" },
+      { text: "Il n'y a pas de plus belle langue que celle du regard qui aime.", author: "Anonyme" },
+      { text: "Là où il y a l'amour, il y a la vie.", author: "Mahatma Gandhi" },
+      { text: "On ne voit bien qu'avec le cœur.", author: "Antoine de Saint-Exupéry" }
+    ],
+    deception: [
+      { text: "La déception n'est que le prix à payer pour avoir cru trop fort.", author: "Anonyme" },
+      { text: "Parfois, les gens qu'on aime le plus sont ceux qui nous blessent le plus.", author: "Anonyme" },
+      { text: "La plus grande déception vient souvent de ceux en qui on avait le plus confiance.", author: "Anonyme" },
+      { text: "Il faut parfois se perdre pour mieux se retrouver.", author: "Anonyme" },
+      { text: "Ce n'est pas la fin qui fait mal, c'est l'espoir qu'on avait placé.", author: "Anonyme" },
+      { text: "On ne guérit pas d'une déception, on s'habitue à vivre avec.", author: "Anonyme" },
+      { text: "La déception est une leçon déguisée en douleur.", author: "Anonyme" },
+      { text: "Mieux vaut une douloureuse vérité qu'une douce illusion.", author: "Anonyme" },
+      { text: "Ne pleure pas parce que c'est fini, souris parce que c'est arrivé.", author: "Anonyme" },
+      { text: "Certaines déceptions nous préparent à de plus belles rencontres.", author: "Anonyme" },
+      { text: "Le silence après une déception en dit parfois plus que les mots.", author: "Anonyme" }
+    ],
+    succes: [
+      { text: "Le succès, c'est d'aller d'échec en échec sans perdre son enthousiasme.", author: "Winston Churchill" },
+      { text: "Le seul endroit où le succès vient avant le travail, c'est dans le dictionnaire.", author: "Vidal Sassoon" },
+      { text: "Vous n'avez pas à être grand pour commencer, mais vous devez commencer pour être grand.", author: "Zig Ziglar" },
+      { text: "Le succès n'est pas la clé du bonheur. Le bonheur est la clé du succès.", author: "Albert Schweitzer" },
+      { text: "Crois en toi-même et tu seras invincible.", author: "Norman Vincent Peale" },
+      { text: "Le succès représente 1% de votre travail qui comporte 99% de ce qu'on peut appeler échec.", author: "Soichiro Honda" },
+      { text: "Entourez-vous de ceux qui vous élèvent.", author: "Oprah Winfrey" },
+      { text: "La persévérance n'est pas une longue course ; c'est beaucoup de petites courses menées un jour à la fois.", author: "Walter Elliot" },
+      { text: "Le succès appartient à ceux qui se lèvent tôt et qui n'abandonnent jamais.", author: "Anonyme" },
+      { text: "Il n'y a pas d'ascenseur pour la réussite, il faut prendre l'escalier.", author: "Anonyme" }
+    ],
+    motivation: [
+      { text: "Le succès n'est pas final, l'échec n'est pas fatal : c'est le courage de continuer qui compte.", author: "Winston Churchill" },
+      { text: "N'attends pas. Le temps n'est jamais juste.", author: "Napoléon Hill" },
+      { text: "Ce qui ne me tue pas me rend plus fort.", author: "Friedrich Nietzsche" },
+      { text: "La seule façon de faire du bon travail est d'aimer ce que vous faites.", author: "Steve Jobs" },
+      { text: "Ne rêve pas ta vie, vis tes rêves.", author: "Anonyme" },
+      { text: "Chaque jour est une nouvelle chance de changer ta vie.", author: "Anonyme" },
+      { text: "Le plus grand risque est de ne prendre aucun risque.", author: "Mark Zuckerberg" },
+      { text: "Tu es plus fort que tu ne le penses.", author: "Anonyme" },
+      { text: "Commence aujourd'hui, pas demain.", author: "Anonyme" },
+      { text: "Une petite avancée chaque jour vaut mieux qu'un grand pas jamais fait.", author: "Anonyme" },
+      { text: "Ton seul concurrent, c'est qui tu étais hier.", author: "Anonyme" }
+    ],
+    echec: [
+      { text: "L'échec n'est qu'une opportunité de recommencer plus intelligemment.", author: "Henry Ford" },
+      { text: "Je ne perds jamais. Soit je gagne, soit j'apprends.", author: "Nelson Mandela" },
+      { text: "L'échec est la mère du succès.", author: "Proverbe chinois" },
+      { text: "Les échecs sont les marches que nous montons pour atteindre le succès.", author: "Roy Bennett" },
+      { text: "J'ai échoué encore et encore… et c'est pourquoi je réussis.", author: "Michael Jordan" },
+      { text: "L'échec est un événement, jamais une personne.", author: "William D. Brown" },
+      { text: "Seuls ceux qui osent échouer grandement peuvent réussir grandement.", author: "Robert F. Kennedy" },
+      { text: "L'échec est le fondement de la réussite.", author: "Lao Tseu" },
+      { text: "Un échec apparent peut contenir les graines d'un succès futur.", author: "Anonyme" },
+      { text: "Tomber fait partie du chemin, rester à terre est un choix.", author: "Anonyme" }
+    ],
+    amitie: [
+      { text: "L'amitié double les joies et divise les peines.", author: "Francis Bacon" },
+      { text: "Un vrai ami est celui qui te prend la main et touche ton cœur.", author: "Anonyme" },
+      { text: "L'amitié, c'est une âme en deux corps.", author: "Aristote" },
+      { text: "Les amis sont la famille que l'on choisit.", author: "Anonyme" },
+      { text: "Un ami, c'est quelqu'un qui te connaît et qui t'aime quand même.", author: "Elbert Hubbard" },
+      { text: "La distance ne compte pas pour ceux qui s'aiment d'amitié.", author: "Anonyme" },
+      { text: "Un bon ami connaît vos histoires ; un meilleur ami les a vécues avec vous.", author: "Anonyme" }
+    ],
+    sagesse: [
+      { text: "La patience est amère, mais son fruit est doux.", author: "Jean-Jacques Rousseau" },
+      { text: "Connais-toi toi-même.", author: "Socrate" },
+      { text: "Le sage ne dit pas tout ce qu'il pense, mais il pense tout ce qu'il dit.", author: "Aristote" },
+      { text: "Il faut cultiver notre jardin.", author: "Voltaire" },
+      { text: "Ce n'est pas parce que les choses sont difficiles que nous n'osons pas, c'est parce que nous n'osons pas qu'elles sont difficiles.", author: "Sénèque" },
+      { text: "Petit à petit, l'oiseau fait son nid.", author: "Proverbe français" },
+      { text: "L'homme qui déplace une montagne commence par déplacer de petites pierres.", author: "Confucius" },
+      { text: "Mieux vaut allumer une bougie que maudire l'obscurité.", author: "Proverbe chinois" },
+      { text: "Écoute les conseils, mais suis ton propre cœur.", author: "Anonyme" },
+      { text: "Le temps guérit ce que la raison ne peut soigner.", author: "Sénèque" }
+    ],
+    bonheur: [
+      { text: "Le bonheur n'est jamais aussi grand que nos souhaits, ni aussi grave que nos craintes.", author: "Antoine Rivarol" },
+      { text: "Le bonheur est parfois caché dans l'inconnu.", author: "Anonyme" },
+      { text: "Cultivez votre jardin intérieur, c'est là que pousse le bonheur.", author: "Anonyme" },
+      { text: "Le bonheur n'est pas une destination, c'est une façon de voyager.", author: "Anonyme" },
+      { text: "Sourire ne coûte rien et rapporte beaucoup.", author: "Proverbe populaire" },
+      { text: "Le bonheur se construit chaque jour, brique après brique.", author: "Anonyme" },
+      { text: "Il n'y a de bonheur que dans les petites choses, quand on sait les regarder.", author: "Anonyme" },
+      { text: "La gratitude transforme ce que l'on a en suffisance.", author: "Anonyme" },
+      { text: "Être heureux, c'est savoir se contenter de peu tout en visant plus haut.", author: "Anonyme" },
+      { text: "Le vrai bonheur ne coûte rien.", author: "Léon Tolstoï" }
+    ]
+  };
+
+  const categoryLabels = {
+    amour: "❤️ Amour", deception: "💔 Déception", succes: "🏆 Succès",
+    motivation: "🔥 Motivation", echec: "📉 Échec", amitie: "🤝 Amitié",
+    sagesse: "🦉 Sagesse", bonheur: "☀️ Bonheur"
+  };
+
+  let currentCategory = "amour";
+  let currentQuote = null;
+
+  function applyStoredTheme(){
+    let saved=null;
+    try{ saved = localStorage.getItem('citations-theme'); }catch(e){}
+    if(saved==='light'||saved==='dark'){
+      document.documentElement.setAttribute('data-theme',saved);
+      document.getElementById('themeBtn').textContent = saved==='dark' ? '☀️' : '🌙';
+    }
+  }
+  function toggleTheme(){
+    const root=document.documentElement;
+    const isDarkNow = getComputedStyle(root).getPropertyValue('--bg1').trim().toLowerCase()==='#1a1a2e' || root.getAttribute('data-theme')==='dark';
+    const next = isDarkNow ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    document.getElementById('themeBtn').textContent = next==='dark' ? '☀️' : '🌙';
+    try{ localStorage.setItem('citations-theme', next); }catch(e){}
+  }
+
+  function init(){
+    applyStoredTheme();
+    const catContainer = document.getElementById("categories");
+    Object.keys(quotes).forEach(key => {
+      const btn = document.createElement("button");
+      btn.className = "cat-btn" + (key === currentCategory ? " active" : "");
+      btn.textContent = categoryLabels[key];
+      btn.onclick = () => selectCategory(key);
+      catContainer.appendChild(btn);
+    });
+    selectCategory(currentCategory);
+  }
+
+  function selectCategory(cat){
+    currentCategory = cat;
+    document.querySelectorAll(".cat-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.textContent === categoryLabels[cat]);
+    });
+    showRandomQuote();
+    renderList();
+  }
+
+  function showRandomQuote(){
+    const list = quotes[currentCategory];
+    const random = list[Math.floor(Math.random() * list.length)];
+    currentQuote = random;
+    document.getElementById("quoteText").textContent = random.text;
+    document.getElementById("quoteAuthor").textContent = "— " + random.author;
+    const copyBtn = document.getElementById("copyBtn");
+    copyBtn.textContent = "📋 Copier";
+    copyBtn.classList.remove("copied");
+  }
+
+  function renderList(){
+    const list = quotes[currentCategory];
+    document.getElementById("listTitle").textContent =
+      `Toutes les citations — ${categoryLabels[currentCategory]} (${list.length})`;
+
+    const container = document.getElementById("quotesList");
+    container.innerHTML = "";
+    list.forEach(q => {
+      const div = document.createElement("div");
+      div.className = "quote-item";
+      div.innerHTML = `<p>« ${q.text} »</p><span>— ${q.author}</span>`;
+      div.onclick = () => {
+        currentQuote = q;
+        document.getElementById("quoteText").textContent = q.text;
+        document.getElementById("quoteAuthor").textContent = "— " + q.author;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+      container.appendChild(div);
+    });
+  }
+
+  function copyQuote(){
+    if (!currentQuote) return;
+    const text = `« ${currentQuote.text} » — ${currentQuote.author}`;
+    const done = () => {
+      const btn = document.getElementById("copyBtn");
+      btn.textContent = "✅ Copié !";
+      btn.classList.add("copied");
+      setTimeout(() => { btn.textContent = "📋 Copier"; btn.classList.remove("copied"); }, 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(()=>{});
+    }
+  }
+
+  function shareWhatsApp(){
+    if (!currentQuote) return;
+    const text = `« ${currentQuote.text} » — ${currentQuote.author}`;
+    const url = "https://wa.me/?text=" + encodeURIComponent(text);
+    window.open(url, "_blank");
+  }
+
+  init();
+
+  /* ===== Installation et hors connexion ===== */
+  let deferredPrompt = null;
+  const isStandalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+  const installCard = document.getElementById('installCard');
+  const installBtn = document.getElementById('installBtn');
+  const installText = document.getElementById('installText');
+
+  function refreshInstallCard(){
+    if (isStandalone){ installCard.classList.add('hidden'); return; }
+    if (isIOS){
+      installText.textContent = "📲 Sur iPhone : touche le bouton Partager de Safari, puis « Sur l'écran d'accueil ».";
+      installBtn.style.display = 'none';
+      installCard.classList.remove('hidden');
+      return;
+    }
+    if (deferredPrompt){
+      installText.textContent = "📲 Installe cette appli sur ton écran d'accueil pour l'ouvrir en un geste, même sans internet.";
+      installBtn.style.display = 'inline-block';
+      installCard.classList.remove('hidden');
+    } else {
+      installCard.classList.add('hidden');
+    }
+  }
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    refreshInstallCard();
+  });
+  window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    refreshInstallCard();
+  });
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    try { await deferredPrompt.userChoice; } catch(e) {}
+    deferredPrompt = null;
+    refreshInstallCard();
+  });
+  refreshInstallCard();
+
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
+</script>
+</body>
+</html>
